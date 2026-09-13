@@ -4,10 +4,7 @@ import com.port.entity.Container;
 import com.port.entity.Ship;
 import com.port.manager.BerthManager;
 import com.port.manager.PortWarehouse;
-import com.port.observer.PortObserver;
-import com.port.observer.StatisticsObserver;
 import com.port.reader.PortConfigReader;
-import com.port.repository.ShipRepository;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,28 +13,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 public class Port {
-
     private static final Logger logger = LogManager.getLogger(Port.class);
 
     private final PortConfigReader configReader;
     private final BerthManager berthManager;
     private final PortWarehouse warehouse;
-    private final ShipRepository shipRepository;
-    private final StatisticsObserver statisticsObserver;
-    private final List<PortObserver> observers;
     private ExecutorService executorService;
 
     public Port(PortConfigReader configReader) {
         this.configReader = configReader;
         this.berthManager = BerthManager.getInstance();
         this.warehouse = PortWarehouse.getInstance();
-        this.shipRepository = new ShipRepository();
-        this.observers = new ArrayList<>();
-        this.statisticsObserver = new StatisticsObserver(berthManager, warehouse);
-        this.observers.add(statisticsObserver);
     }
 
     public void run() {
@@ -64,13 +54,11 @@ public class Port {
     private void initializeWarehouse(Map<String, Integer> config) {
         int warehouseCapacity = config.getOrDefault("warehouse_capacity", 100);
         int initialContainers = config.getOrDefault("initial_warehouse_containers", 30);
-
         List<Container> initialContainerList = new ArrayList<>();
         for (int i = 1; i <= initialContainers; i++) {
             String containerId = "WH-CONT-" + i;
             initialContainerList.add(new Container(containerId));
         }
-
         warehouse.initialize(warehouseCapacity, initialContainerList);
         logger.info("Warehouse initialized with capacity {} and {} initial containers",
                 warehouseCapacity, initialContainers);
@@ -90,24 +78,21 @@ public class Port {
         for (int i = 1; i <= numShips; i++) {
             String shipId = "SHIP-" + i;
             String shipName = "Vessel-" + i;
-            int capacity = shipCapacityMin + (int) (Math.random() * (shipCapacityMax - shipCapacityMin + 1));
-
+            // ✅ Используем ThreadLocalRandom вместо Math.random() — быстрее и безопаснее в многопоточке
+            int capacity = ThreadLocalRandom.current().nextInt(shipCapacityMin, shipCapacityMax + 1);
             List<Container> toUnload = generateContainers(shipId, "unload", minUnload, maxUnload);
-            int toLoadCount = minLoad + (int) (Math.random() * (maxLoad - minLoad + 1));
+            int toLoadCount = ThreadLocalRandom.current().nextInt(minLoad, maxLoad + 1);
 
             Ship ship = new Ship(shipId, shipName, capacity, toUnload, toLoadCount);
-            shipRepository.add(ship);
-
             logger.info("Created ship: {} ({}), capacity: {}, to unload: {}, to load: {}",
                     shipName, shipId, capacity, toUnload.size(), toLoadCount);
-
             executorService.submit(ship);
         }
     }
 
     private List<Container> generateContainers(String shipId, String type, int min, int max) {
         List<Container> containers = new ArrayList<>();
-        int count = min + (int) (Math.random() * (max - min + 1));
+        int count = ThreadLocalRandom.current().nextInt(min, max + 1); // ✅ ThreadLocalRandom
         for (int i = 1; i <= count; i++) {
             String containerId = shipId + "-" + type + "-" + i;
             containers.add(new Container(containerId));
@@ -131,40 +116,10 @@ public class Port {
 
     private void logFinalStatistics() {
         logger.info("=== Final Port Statistics ===");
-        logger.info("Total ships: {}", shipRepository.size());
-        logger.info("Ships serviced: {}", shipRepository.getServicedShips().size());
-
-        int totalUnloaded = 0;
-        int totalLoaded = 0;
-        for (Ship ship : shipRepository.getServicedShips()) {
-            totalUnloaded += ship.getUnloadedContainers().size();
-            totalLoaded += ship.getLoadedContainers().size();
-        }
-
-        logger.info("Total containers unloaded: {}", totalUnloaded);
-        logger.info("Total containers loaded: {}", totalLoaded);
         logger.info("Warehouse final occupancy: {}/{}",
                 warehouse.getCurrentContainers(), warehouse.getCapacity());
+        logger.info("Berths available: {}/{}",
+                berthManager.getAvailableBerths(), berthManager.getTotalBerths());
         logger.info("================================");
-    }
-
-    public void addObserver(PortObserver observer) {
-        observers.add(observer);
-        logger.info("Observer added: {}", observer.getClass().getSimpleName());
-    }
-
-    public void removeObserver(PortObserver observer) {
-        observers.remove(observer);
-        logger.info("Observer removed: {}", observer.getClass().getSimpleName());
-    }
-
-    public void notifyObservers(String event) {
-        for (PortObserver observer : observers) {
-            observer.update(event);
-        }
-    }
-
-    public ShipRepository getShipRepository() {
-        return shipRepository;
     }
 }

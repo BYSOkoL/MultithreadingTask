@@ -10,8 +10,8 @@ import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class BerthManager {
-
     private static final Logger logger = LogManager.getLogger(BerthManager.class);
+
     private static final BerthManager instance;
 
     static {
@@ -19,7 +19,7 @@ public class BerthManager {
     }
 
     private final Map<String, Ship> berths;
-    private final Semaphore availableBerths;
+    private Semaphore availableBerths; // ✅ Убрали final, чтобы можно было пересоздать
     private final ReentrantLock lock;
     private int totalBerths;
     private int nextBerthNumber;
@@ -42,6 +42,8 @@ public class BerthManager {
             this.totalBerths = numBerths;
             this.berths.clear();
             this.nextBerthNumber = 1;
+            this.availableBerths = new Semaphore(numBerths); // ✅ Пересоздаём семафор с новой ёмкостью
+            logger.info("BerthManager reinitialized with {} berths", numBerths);
         } finally {
             lock.unlock();
         }
