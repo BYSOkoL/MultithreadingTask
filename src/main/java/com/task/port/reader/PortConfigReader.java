@@ -1,6 +1,6 @@
-package com.port.reader;
+package com.task.port.reader;
 
-import com.port.exception.PortException;
+import com.task.port.exception.PortException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

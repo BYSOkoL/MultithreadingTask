@@ -1,7 +1,8 @@
 package com.port.manager;
 
-import com.port.entity.Container;
-import com.port.entity.Ship;
+import com.task.port.entity.Container;
+import com.task.port.entity.Ship;
+import com.task.port.manager.PortWarehouse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

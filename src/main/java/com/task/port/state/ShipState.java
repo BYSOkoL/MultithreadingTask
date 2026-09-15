@@ -1,4 +1,4 @@
-package com.port.state;
+package com.task.port.state;
 
 public interface ShipState {
     void handle();

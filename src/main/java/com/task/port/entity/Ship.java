@@ -1,7 +1,7 @@
-package com.port.entity;
+package com.task.port.entity;
 
-import com.port.state.ShipState;
-import com.port.state.ShipStateFactory;
+import com.task.port.state.ShipState;
+import com.task.port.state.ShipStateFactory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

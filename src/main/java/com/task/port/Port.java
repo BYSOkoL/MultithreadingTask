@@ -1,10 +1,10 @@
-package com.port;
+package com.task.port;
 
-import com.port.entity.Container;
-import com.port.entity.Ship;
-import com.port.manager.BerthManager;
-import com.port.manager.PortWarehouse;
-import com.port.reader.PortConfigReader;
+import com.task.port.entity.Container;
+import com.task.port.entity.Ship;
+import com.task.port.manager.BerthManager;
+import com.task.port.manager.PortWarehouse;
+import com.task.port.reader.PortConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

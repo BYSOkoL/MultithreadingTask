@@ -1,8 +1,8 @@
-package com.port.state;
+package com.task.port.state;
 
-import com.port.entity.Ship;
-import com.port.manager.BerthManager;
-import com.port.manager.PortWarehouse;
+import com.task.port.entity.Ship;
+import com.task.port.manager.BerthManager;
+import com.task.port.manager.PortWarehouse;
 
 public class ShipStateFactory {
 
