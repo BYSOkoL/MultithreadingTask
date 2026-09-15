@@ -1,10 +1,7 @@
 berths=3
-warehouse_capacity=1000
-initial_warehouse_containers=300
-ships=50
-min_containers_to_unload=30
-max_containers_to_unload=100
-min_containers_to_load=30
-max_containers_to_load=100
-ship_capacity_min=150
-ship_capacity_max=250
+warehouse_capacity=100
+warehouse_initial_stock=20
+ships=5
+ship_capacity=10
+containers_to_unload=4
+containers_to_load=3
