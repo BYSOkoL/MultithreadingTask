@@ -1,7 +1,9 @@
 package com.port.state;
 
-import com.port.entity.Container;
-import com.port.entity.Ship;
+import com.task.port.entity.Container;
+import com.task.port.entity.Ship;
+import com.task.port.state.ShipState;
+import com.task.port.state.ShipStateFactory;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

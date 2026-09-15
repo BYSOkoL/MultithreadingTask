@@ -1,6 +1,6 @@
-package com.port.repository;
+package com.task.port.repository;
 
-import com.port.entity.Ship;
+import com.task.port.entity.Ship;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,7 +1,8 @@
 package com.port.observer;
 
-import com.port.manager.BerthManager;
-import com.port.manager.PortWarehouse;
+import com.task.port.manager.BerthManager;
+import com.task.port.manager.PortWarehouse;
+import com.task.port.observer.StatisticsObserver;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

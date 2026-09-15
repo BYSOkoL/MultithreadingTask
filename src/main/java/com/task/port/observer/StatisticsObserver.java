@@ -1,7 +1,7 @@
-package com.port.observer;
+package com.task.port.observer;
 
-import com.port.manager.BerthManager;
-import com.port.manager.PortWarehouse;
+import com.task.port.manager.BerthManager;
+import com.task.port.manager.PortWarehouse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

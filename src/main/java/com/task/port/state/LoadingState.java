@@ -1,9 +1,9 @@
-package com.port.state;
+package com.task.port.state;
 
-import com.port.entity.Container;
-import com.port.entity.Ship;
-import com.port.manager.BerthManager;
-import com.port.manager.PortWarehouse;
+import com.task.port.entity.Container;
+import com.task.port.entity.Ship;
+import com.task.port.manager.BerthManager;
+import com.task.port.manager.PortWarehouse;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -32,8 +32,7 @@ public class LoadingState implements ShipState {
         try {
             int targetLoad = ship.getContainersToLoadCount();
             int emptyAttempts = 0;
-            int maxEmptyAttempts = 100; // ✅ Увеличили с 3 до 100 — корабль будет ждать,
-            // пока другие корабли разгрузятся и заполнят склад
+            int maxEmptyAttempts = 100;
 
             while (ship.getLoadedCount() < targetLoad && ship.getAvailableSpace() > 0) {
                 Container container = warehouse.getContainerForShip(ship);
@@ -50,7 +49,7 @@ public class LoadingState implements ShipState {
                                 ship.getName(), ship.getId(), ship.getLoadedCount(), targetLoad);
                         break;
                     }
-                    if (emptyAttempts % 10 == 0) { // ✅ Логируем не каждую секунду, а каждые 10
+                    if (emptyAttempts % 10 == 0) { //
                         logger.warn("Waiting for containers in warehouse for ship {} (attempt {}/{})",
                                 ship.getName(), emptyAttempts, maxEmptyAttempts);
                     }

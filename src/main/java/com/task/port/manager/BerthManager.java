@@ -1,6 +1,6 @@
-package com.port.manager;
+package com.task.port.manager;
 
-import com.port.entity.Ship;
+import com.task.port.entity.Ship;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -19,7 +19,7 @@ public class BerthManager {
     }
 
     private final Map<String, Ship> berths;
-    private Semaphore availableBerths; // ✅ Убрали final, чтобы можно было пересоздать
+    private Semaphore availableBerths;
     private final ReentrantLock lock;
     private int totalBerths;
     private int nextBerthNumber;
@@ -42,7 +42,7 @@ public class BerthManager {
             this.totalBerths = numBerths;
             this.berths.clear();
             this.nextBerthNumber = 1;
-            this.availableBerths = new Semaphore(numBerths); // ✅ Пересоздаём семафор с новой ёмкостью
+            this.availableBerths = new Semaphore(numBerths);
             logger.info("BerthManager reinitialized with {} berths", numBerths);
         } finally {
             lock.unlock();

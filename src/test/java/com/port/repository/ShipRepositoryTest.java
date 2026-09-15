@@ -1,7 +1,8 @@
 package com.port.repository;
 
-import com.port.entity.Container;
-import com.port.entity.Ship;
+import com.task.port.entity.Container;
+import com.task.port.entity.Ship;
+import com.task.port.repository.ShipRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

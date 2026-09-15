@@ -1,10 +1,10 @@
-package com.port;
+package com.task.port;
 
-import com.port.entity.Container;
-import com.port.entity.Ship;
-import com.port.manager.BerthManager;
-import com.port.manager.PortWarehouse;
-import com.port.reader.PortConfigReader;
+import com.task.port.entity.Container;
+import com.task.port.entity.Ship;
+import com.task.port.manager.BerthManager;
+import com.task.port.manager.PortWarehouse;
+import com.task.port.reader.PortConfigReader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,7 +92,7 @@ public class Port {
 
     private List<Container> generateContainers(String shipId, String type, int min, int max) {
         List<Container> containers = new ArrayList<>();
-        int count = ThreadLocalRandom.current().nextInt(min, max + 1); // ✅ ThreadLocalRandom
+        int count = ThreadLocalRandom.current().nextInt(min, max + 1);
         for (int i = 1; i <= count; i++) {
             String containerId = shipId + "-" + type + "-" + i;
             containers.add(new Container(containerId));
